@@ -18,7 +18,7 @@ def load_sample_data():
         "Date": pd.date_range(start="2023-01-01", periods=num_rows, freq="D"),
         "Product": ["Product A", "Product B", "Product C"] * (num_rows // 3) + ["Product A"] * (num_rows % 3),
         "Category": ["Category 1", "Category 2", "Category 3"] * (num_rows // 3) + ["Category 1"] * (num_rows % 3),
-        "Region": ["North", "South", "East", "West"] * (num_rows // 4) + ["North"] * (num_rows % 4),
+        "Store": ["VESTA", "Ya Samaya", "Hoang store", "Doraemon"] * (num_rows // 4) + ["Hoang store"] * (num_rows % 4),
         "Sales": [round(abs(x), 2) for x in pd.Series(range(num_rows)).sample(num_rows, replace=True) * 1.5],
         "Quantity": [round(x) % 10 for x in pd.Series(range(num_rows)).sample(num_rows, replace=True)],
     }
@@ -41,7 +41,7 @@ else:
     st.sidebar.info("Using sample data.")
 
 # Ensure the dataset has required columns
-required_columns = {"Date", "Product", "Category", "Region", "Sales", "Quantity"}
+required_columns = {"Date", "Product", "Category", "Store", "Sales", "Quantity"}
 if not required_columns.issubset(df.columns):
     st.error(f"Uploaded data must contain the following columns: {', '.join(required_columns)}")
     st.stop()
@@ -50,7 +50,7 @@ if not required_columns.issubset(df.columns):
 st.sidebar.header("Filter Options")
 unique_products = df["Product"].unique().tolist()
 unique_categories = df["Category"].unique().tolist()
-unique_regions = ["All"] + df["Region"].unique().tolist()
+unique_Stores = ["All"] + df["Store"].unique().tolist()
 
 selected_product = st.sidebar.multiselect(
     "Select Product(s):",
@@ -62,16 +62,16 @@ selected_category = st.sidebar.multiselect(
     options=unique_categories,
     default=unique_categories
 )
-selected_region = st.sidebar.selectbox(
-    "Select Region:",
-    options=unique_regions,
+selected_Store = st.sidebar.selectbox(
+    "Select Store:",
+    options=unique_Stores,
     index=0
 )
 
 # Filter data based on sidebar selections
 filtered_df = df[df["Product"].isin(selected_product) & df["Category"].isin(selected_category)]
-if selected_region != "All":
-    filtered_df = filtered_df[filtered_df["Region"] == selected_region]
+if selected_Store != "All":
+    filtered_df = filtered_df[filtered_df["Store"] == selected_Store]
 
 # Main dashboard layout
 st.title("📊 E-commerce Analytics Dashboard")
