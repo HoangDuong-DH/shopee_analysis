@@ -1,0 +1,13 @@
+urllib3
+requests
+pandas
+matplotlib
+pyyaml
+python-dotenv
+numpy
+streamlit
+jupyterlab
+pygwalker
+seaborn
+openpyxl
+plotly
